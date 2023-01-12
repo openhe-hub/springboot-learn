@@ -71,8 +71,8 @@
    3. 扫描默认包结构：主应用所在包及其子包
    4. 各种默认配置值，在`application.properties`下更改
    5. 按需加载starter
-5. 容器功能
-   1. 组件添加
+5. 容器注解
+   1. @Configuration
       spring的注解配置bean
         1. 配置类里面使用@Bean标注在方法上给容器注册组件，默认也是单实例的
         2. 配置类本身也是组件
@@ -80,5 +80,33 @@
             Full(proxyBeanMethods = true)、【保证每个@Bean方法被调用多少次返回的组件都是单实例的】
             Lite(proxyBeanMethods = false)【每个@Bean方法被调用多少次返回的组件都是新创建的】
             组件依赖必须使用Full模式默认。其他默认是否Lite模式
-   2. 原生配置文件引入
-   3. 配置绑定
+   2. @Bean/@Component/@Controller/@Service/@Repository
+   3. @Import: 注解注入bean
+   4. @Conditional：条件注入
+   5. @ImportResource：引入bean.xml配置
+   6. @ConfigurationProperties配置绑定
+      * 从核心配置文件初始化bean
+      * Car.java
+      ```java
+        package com.example.demo.bean;
+
+        import lombok.Data;
+        import org.springframework.boot.context.properties.ConfigurationProperties;
+
+        @Data
+        @ConfigurationProperties(prefix = "mycar")
+        public class Car {
+            private String brand;
+            private Integer price;
+        }
+      ```
+      * application.properties
+      ```properties
+      mycar.brand=byd
+      mycar.price=100000
+      ```
+      * MyConfig.java加上
+      ```java
+      @EnableConfigurationProperties(Car.class)
+      ```
+   7. @AutoWired 自动注入

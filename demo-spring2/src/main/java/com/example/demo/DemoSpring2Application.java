@@ -13,7 +13,7 @@ public class DemoSpring2Application {
     public static void main(String[] args) {
         // return IOC container
         ConfigurableApplicationContext context=SpringApplication.run(DemoSpring2Application.class,args);
-        // get beans
+        /*// get beans
         String[] names=context.getBeanDefinitionNames();
         for (String name : names) {
             System.out.println(name);
@@ -29,5 +29,15 @@ public class DemoSpring2Application {
         User user1=context.getBean("user1",User.class);
         Pet tom=context.getBean("tom",Pet.class);
         System.out.println("check if equal 2="+(user1.getPet()==tom));
+        // get beans from @import
+        String[] beanNamesForType = context.getBeanNamesForType(User.class);
+        System.out.println("============");
+        for (String s : beanNamesForType) {
+            System.out.println(s);
+        }*/
+        boolean tom = context.containsBean("tom");
+        System.out.println(tom);
+        boolean user1 = context.containsBean("user1");
+        System.out.println(user1);
     }
 }
