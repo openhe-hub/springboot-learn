@@ -86,6 +86,14 @@
    5. @ImportResource：引入bean.xml配置
    6. @ConfigurationProperties配置绑定
       * 从核心配置文件初始化bean
+      * pom.xml添加依赖
+      ```xml
+      <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+      </dependency>
+      ``` 
       * Car.java
       ```java
         package com.example.demo.bean;

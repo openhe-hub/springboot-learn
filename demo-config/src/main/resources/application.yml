@@ -1,0 +1,24 @@
+person:
+  # 单引号转义，双引号不转义
+  # 单引号将\n作为字符串输出，双引号不转义
+  # someVar => some-var
+  user-name: 'openhe\n'
+  boss: true
+  birth: 2004/04/08
+  age: 18
+  interests: [coding, music]
+  animal:
+    - cat
+    - dog
+  score: {math:100,English:80}
+  salarys: [999,888]
+  pet:
+    name: tomcat
+    weight: 10
+  all-pets:
+    sick:
+      - {name: aaa, weight: 10}
+      - {name: bbb, weight: 10}
+    health:
+      - {name: ccc, weight: 10}
+      - {name: ddd, weight: 10}
