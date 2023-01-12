@@ -12,7 +12,7 @@ public class HelloController {
 
     @RequestMapping("hello")
     public String handle() {
-        return "Hello, SpringBoot 2.7!"+"你好";
+        return "Hello, SpringBoot 2.7!"+"你好"+"test hot deployment";
     }
 
     @RequestMapping("car")
