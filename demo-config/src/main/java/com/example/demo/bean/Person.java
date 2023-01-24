@@ -13,7 +13,6 @@ import java.util.Set;
 @Component
 @ConfigurationProperties(prefix = "person")
 public class Person {
-
     private String userName;
     private Boolean boss;
     private Date birth;
