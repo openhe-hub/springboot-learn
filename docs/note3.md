@@ -184,5 +184,40 @@
       }
       ``` 
    3. 在`addInterceptors`方法中，定义拦截和放行路径，注意需要放行静态资源
-1. 文件上传
-2.  错误处理 
+8. 文件上传：使用SpringMVC封装好的`MultipartFile`
+   ```java
+    @Data
+    public class ImgBean {
+        String email;
+        String username;
+        MultipartFile headerImg;
+        MultipartFile[] photos;
+    }
+   ```
+   ```java
+    @PostMapping("/upload")
+    public String upload(ImgBean imgBean) throws IOException {
+        MultipartFile headerImg = imgBean.getHeaderImg();
+        MultipartFile[] photos = imgBean.getPhotos();
+        // save single file
+        if (!headerImg.isEmpty()) {
+            headerImg.transferTo(new File("D:\\" + headerImg.getOriginalFilename()));
+        }
+        for (MultipartFile photo : photos) {
+            if (!photo.isEmpty()) {
+                photo.transferTo(new File("D:\\group\\" + photo.getOriginalFilename()));
+            }
+        }
+        return "main";
+    }
+   ``` 
+   * 配置单个文件和单次请求大小限制
+   ```yaml
+    spring.servlet.multipart.max-file-size=10MB
+    spring.servlet.multipart.max-request-size=100MB
+   ``` 
+9.  错误处理 
+    1.  默认错误处理
+        1.  对于机器端，响应报错的json数据
+        2.  对于浏览器端，响应一个whitelabel错误视图，在templates/error/下自定义`4xx.html`，`5xx.html`可以对应4**,5**的http报错代码
+    2.  自定义：实现`ErrorController`
