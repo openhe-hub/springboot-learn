@@ -1,4 +1,4 @@
-# SpringBoot Note 1：Springboot入门（启动器，依赖管理，自动配置，注解）
+# SpringBoot Note 1：入门（启动器，依赖管理，自动配置，注解）
 
 1. SpringBoot 优点
     1. 创建独立spring应用

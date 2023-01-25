@@ -1,4 +1,4 @@
-# SpringBoot Note 2：开发工具与yaml配置
+# SpringBoot Note 2：各类开发工具与yaml配置
 1. dev-tools：热部署插件(严格意义上自动重启)
    依赖
    ```xml
@@ -136,3 +136,4 @@
         - {name: ccc, weight: 10}
         - {name: ddd, weight: 10}
    ``` 
+5. Slf4j日志系统：Springboot已经集成，类上加注解@Slf4j即可自动注入log对象   
