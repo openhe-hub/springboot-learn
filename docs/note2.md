@@ -1,4 +1,4 @@
-# SpringBoot Note 2
+# SpringBoot Note 2：开发工具与yaml配置
 1. dev-tools：热部署插件(严格意义上自动重启)
    依赖
    ```xml

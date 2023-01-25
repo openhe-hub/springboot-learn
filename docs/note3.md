@@ -1,4 +1,4 @@
-# SpringBoot Note 3
+# SpringBoot Note 3：Springboot中的SpringMVC与web开发
 1. SpringMVC 自动配置
     * 内容协商视图解析器和BeanName视图解析器
     * 静态资源（包括webjars）
@@ -93,4 +93,96 @@
         }
       ```
       * 注意json的key和对象属性必须一一对应，若不对应，可以使用`@JsonAlias`或`@JsonProperty`进行配置
-   6. 
+6. 后台管理登录demo：Srpingboot+SpringMVC+thymeleaf
+   ```java
+    package com.example.admin.controller;
+
+    import com.example.admin.bean.User;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.ui.Model;
+    import org.springframework.util.StreamUtils;
+    import org.springframework.util.StringUtils;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.PostMapping;
+
+    import javax.servlet.http.HttpSession;
+
+    @Controller
+    public class IndexController {
+        @GetMapping(value = {"/", "/login"})
+        public String loginPage() {
+            return "login";
+        }
+
+        @PostMapping("/login")
+        public String login(User user, HttpSession session, Model model) {
+            // redirection avoid form submit again
+            if (StringUtils.hasLength(user.getUserName()) &&
+                    user.getPassword().equals("123456")) {
+                session.setAttribute("loginUser", user);
+                return "redirect:/main.html";
+            } else {
+                model.addAttribute("msg", "username or password error.");
+                return "login";
+            }
+        }
+
+        @GetMapping("/main.html")
+        public String mainPage(HttpSession session, Model model) {
+            Object user = session.getAttribute("loginUser");
+            if (user != null) {
+                return "main";
+            } else {
+                model.addAttribute("msg", "please login first");
+                return "login";
+            }
+        }
+    }
+   ``` 
+   * SpringMVC中使用model在前后端传数据
+   * SpringMVC中每个controller方法都可以获取session,request,response对象，用法与servlet中相同，demo使用session检查登录状态
+   * demo使用thymeleaf模板语言，实际使用前后端分离的项目较多
+   * 使用重定向解决表单重复提交的问题
+7. 拦截器
+   1. 继承`HandlerInterceptor`定义拦截器
+      ```java
+      public class LoginInterceptor implements HandlerInterceptor {
+      @Override
+      public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+          HttpSession session = request.getSession();
+          Object loginUser = session.getAttribute("loginUser");
+          if (loginUser != null) {
+              return true;
+          } else{
+              session.setAttribute("msg","please login first");
+              response.sendRedirect("/");
+              return false;
+          }
+      }
+
+      @Override
+      public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+          HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+      }
+
+      @Override
+      public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+          HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+      }
+      }
+      ``` 
+   2. 添加一个配置类`@Configuration`，继承`WebMvcConfigurer`  
+      ```java
+      @Configuration
+      public class WebConfig implements WebMvcConfigurer {
+          @Override
+          public void addInterceptors(InterceptorRegistry registry) {
+              registry.addInterceptor(new LoginInterceptor())
+                      .addPathPatterns("/**")
+                      .excludePathPatterns("/", "/login","/css/**","/fonts/**","/images/**","/js/**");
+          }
+      }
+      ``` 
+   3. 在`addInterceptors`方法中，定义拦截和放行路径，注意需要放行静态资源
+1. 文件上传
+2.  错误处理 
